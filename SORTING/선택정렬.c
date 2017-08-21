@@ -30,6 +30,23 @@ void selectionSort(int arr[],int size) {
 	}
 }
 
+//tmp 임시변수를 사용으로 개선
+void selectionSort2(int arr[], int size) {
+
+	int tmp;
+	for (int i = 0; i < size - 1; i++) {
+		tmp = i;
+		for (int j = i + 1; j < size; j++) {
+
+			if (arr[tmp] >= arr[j]) {	
+				tmp = j;// 더 작은값 의 인덱스를 찾아서
+
+			}
+			swap(&arr[i], &arr[tmp]);
+		}
+	}
+}
+
 int main() {
 
 	int arr[10] = { 6, 3, 4, 1, 8, 10, 9, 5, 2, 7 };
