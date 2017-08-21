@@ -17,7 +17,7 @@ void printArray(int arr[], int size) {
 }
 
 //http://hsp1116.tistory.com/33
-void selectionSort(int arr[],int size) {
+void selectionSort_(int arr[],int size) {
 	
 	for (int i = 0; i < size-1; i++) {
 
@@ -31,7 +31,7 @@ void selectionSort(int arr[],int size) {
 }
 
 //tmp 임시변수를 사용으로 개선
-void selectionSort2(int arr[], int size) {
+void selectionSort(int arr[], int size) {
 
 	int tmp;
 	for (int i = 0; i < size - 1; i++) {
