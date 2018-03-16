@@ -32,6 +32,9 @@ The flattened tree should look like:
 * };
 */
 #include <stdio.h>
+#include <queue>
+using namespace std;
+
 
 struct TreeNode {
     int val;
@@ -41,12 +44,62 @@ struct TreeNode {
 
 };
 class Solution {
+    queue<TreeNode*> q;
+    TreeNode* cur;
+
     public:
     void flatten(TreeNode* root) {
 
+        if (root == NULL)
+            return;
+
+        dfs(root);
+        
+        while (true) {
+            cur = q.front();
+            q.pop();
+
+            if (q.empty()) 
+                break;
+
+            cur->right = q.front();
+            cur->left = nullptr;
+        }
+
+        print_dfs(root);
+    }
+
+    void dfs(TreeNode* node) {
+        if (node) {
+            q.push(node);
+            printf("push %d\n", node->val);
+            dfs(node->left);
+            dfs(node->right);
+        }
+    }
+
+    void print_dfs(TreeNode* node)
+    {
+        if (node)
+        {
+            printf("%d ", node->val);
+            print_dfs(node->left);
+            print_dfs(node->right);
+        }
     }
 };
+
+
 void main()
 {
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(2);
+    root->right = new TreeNode(5);
 
+    root->left->left = new TreeNode(3);
+    root->left->right = new TreeNode(4);
+
+    root->right->right = new TreeNode(6);
+
+    Solution().flatten(root);
 }
