@@ -49,18 +49,15 @@ class Solution {
         _p = p;
         _q = q;
         dfs(root);
-
-        printf("%d, %d\n");
-
-        if (s1.size() > s2.size()) {    // s2.size가 크게 세팅
+        
+        if (s1.size() > s2.size()) {
             temp = s1;
             s1 = s2;
             s2 = temp;
         }
 
-        while (s1.size() != s2.size()) {
+        while (s1.size() != s2.size())
             s2.pop();
-        }
 
         while (s1.top() != s2.top()) {
             s1.pop();
@@ -73,21 +70,19 @@ class Solution {
     void dfs(TreeNode* node) {
         if (node) {
             temp.push(node);
+
+            if (node == _p)
+                s1 = temp;
+
+            if (node == _q)
+                s2 = temp;
+
             dfs(node->left);
             dfs(node->right);
+
             temp.pop();
-
-            if (node == _p) {
-                s1 = temp;
-            }
-
-            if (node == _q) {
-                s2 = temp;
-            }
         }
     }
-
-    
 };
 
 void main()
@@ -104,5 +99,5 @@ void main()
     root->right->left = new TreeNode(0);
     root->right->right = new TreeNode(8);
 
-    printf("%d\n", Solution().lowestCommonAncestor(root, root->left, root->left->right->right)->val);
+    printf("%d\n", Solution().lowestCommonAncestor(root, root->left->right->left, root->left->left)->val);
 }
