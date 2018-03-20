@@ -22,11 +22,32 @@ using namespace std;
 class Solution {
     public:
     bool increasingTriplet(vector<int>& nums) {
+        int first = INT_MAX, second = INT_MAX;
+        for (int x : nums) {
+            if (x <= first)
+                first = x;
+            else if (x <= second)
+                second = x;
+            else
+                return true;
+        }
         return false;
     }
 };
 
+    
+
 void main()
 {
+    vector<int> nums = {3,4,1,5,2};//false
+    //vector<int> nums = { 4,5,1,2,3 };//true
+
+
+    if (Solution().increasingTriplet(nums)) {
+        printf("true\n");
+    }
+    else {
+        printf("false\n");
+    }
     return;
 }
