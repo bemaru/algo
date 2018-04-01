@@ -37,18 +37,121 @@ poured will be in the range of [0, 10 ^ 9].
 query_glass and query_row will be in the range of [0, 99].
 */
 
-class Solution {
+#include <vector>
+using namespace std;
+
+
+/*class Solution {
+    
     public:
-    double champagneTower(int poured, int query_row, int query_glass) {
-        return 0;
+    double champagneTower(int poured, int query_row, int query_glass) 
+    {
+        vector<vector<double>> pyramid;
+
+        for (int i = 0; i <= query_row; i++) 
+        {
+            vector<double> row;
+            for (int j = 0; j <= i; j++) {
+                row.push_back(0.0);
+            }
+            
+            
+            pyramid.push_back(row);
+        }
+       
+        pour(poured, 0, 0, pyramid);
+        
+        printPyramid(pyramid);
+        return pyramid[query_row][query_glass];
+    }
+
+    void pour(double poured, int i, int j, vector<vector<double>>& pyramid) 
+    {
+        double& cup = pyramid[i][j];
+        
+        if (cup < 1) {
+            double need = 1.0 - cup;
+            
+            if (poured >= need) {
+                cup += need;
+                poured -= need;
+            }
+            else 
+            {
+                cup += poured;
+                poured = 0;
+            }
+        }
+
+        if (poured > 0) {
+            pour(poured / 2, i + 1, j, pyramid);
+            pour(poured / 2, i + 1, j + 1, pyramid);
+        }
     }
 };
 
+
+#include <stdio.h>
+
 int main()
 {
-    int poured = 0;
-    int query_row = 0;
+    int poured = 6;
+    int query_row = 4;
     int query_glass = 0;
+
+    Solution().champagneTower(poured, query_row, query_glass);
+    return 0;
+}*/
+
+#include <string>
+#include <iostream>
+
+const int kMaxRow = 100;
+
+void printPyramid(double p[][kMaxRow+1],int row)
+{
+    for (int i = 0; i <= row; i++)
+    {
+        for (int j = 0; j <= i; j++) 
+        {
+            printf("%f ", p[i][j]);
+        }
+        printf("\n");
+    }
+    
+}
+
+
+
+class Solution {
+ 
+    public:
+    double champagneTower(int poured, int query_row, int query_glass)
+    {
+        double pyramid[kMaxRow + 1][kMaxRow + 1] = {};
+        
+        pyramid[0][0] = poured;
+        for (int i = 0; i <kMaxRow; i++) {
+            for (int j = 0; j <= i; j++) {
+                if (pyramid[i][j] >= 1) {
+                    pyramid[i + 1][j] += (pyramid[i][j] - 1) / 2;
+                    pyramid[i + 1][j+1] += (pyramid[i][j] - 1) / 2;
+                    pyramid[i][j] = 1;
+                }
+            }
+        }
+        return pyramid[query_row][query_glass];
+    }
+};
+
+
+int main()
+{
+    int poured = 4;
+    int query_row = 2;
+    int query_glass = 1;
+
+
     Solution().champagneTower(poured, query_row, query_glass);
     return 0;
 }
