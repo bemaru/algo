@@ -76,24 +76,119 @@ Note: Answer will in the range of 32-bit signed integer.
 */
 
 #include <stdio.h>
+#include <vector>
+#include <map>
+#include <algorithm>
+#include <queue>
+using namespace std;
 
 struct TreeNode {
+    
     int val;
     TreeNode *left;
     TreeNode *right;
     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
 };
 
+
 class Solution {
+
+    map<int,vector<int>> levelMap;
+    int treeDepth = 0;
+    int maxWidth = 0;
+
+    public:
+    int widthOfBinaryTree(TreeNode* root) 
+    {
+        dfs(root, 0, 1);
+
+        vector<int> sameLevelNodes;
+        int levelWidth;
+
+        for (int i = 0; i < levelMap.size();i++) 
+        {
+            sameLevelNodes = levelMap[i];
+
+            levelWidth = sameLevelNodes.back() - sameLevelNodes.front() + 1;
+            maxWidth = max(maxWidth, levelWidth);
+        }
+
+        return maxWidth;
+    }
+
+    void dfs(TreeNode* node, int level, int seq) 
+    {
+        if (node == nullptr) 
+            return;
+
+        treeDepth = max(treeDepth, level);
+        
+        levelMap[level].emplace_back(seq);
+        
+        dfs(node->left, level + 1, seq * 2 - 1);
+        dfs(node->right, level + 1, seq * 2);
+    }
+};
+
+class Solution2 {
+    int maxWidth = 0;
     public:
     int widthOfBinaryTree(TreeNode* root) {
+        bfs(root);
         return 0;
+    }
+    int level = 0;
+    void bfs(TreeNode* node) {
+        queue<TreeNode*> q;
+
+        printf("%d : ", level);
+        q.push(node);
+        q.push(nullptr);
+        
+        while (!q.empty()) {
+            node = q.front();
+            q.pop();
+            
+            if (node == nullptr) {
+                
+                q.push(nullptr);
+                if (q.front() == nullptr) {
+                    break;
+                }
+
+                level++;
+                printf("\n%d : ", level);
+            }
+            else {
+                printf("%d ", node->val);
+
+                if (node->left) {
+                    q.push(node->left);
+                }
+
+                if (node->right) {
+                    q.push(node->right);
+                }
+            }
+        }
     }
 };
 
 int main()
 {
-    TreeNode* root = NULL;
-    Solution().widthOfBinaryTree(root);
+    TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(3);
+    root->right = new TreeNode(2);
+    root->left->left = new TreeNode(5);
+    root->right->right = new TreeNode(9);
+
+    /*TreeNode* root = new TreeNode(1);
+    root->left = new TreeNode(3);
+    root->right = new TreeNode(2);
+    root->left->left = new TreeNode(5);*/
+
+   
+    printf("sol : %d\n", Solution().widthOfBinaryTree(root));
+
     return 0;
 }
