@@ -1,47 +1,31 @@
 #include <stdio.h>
 #include <vector>
-#include <algorithm>
 
 using namespace std;
 
-
 class Solution {
-    
+
+    //TODO : 느림, 스택적용 필요
     public:
-    vector<int> nextGreaterElements(vector<int>& nums) {
-        
-        vector<int> sorted = nums;
-        std::sort(sorted.begin(), sorted.end());
-        
-        for (auto x : sorted) 
-        {
-            printf("%d ", x);
-        }
+    vector<int> nextGreaterElements(vector<int>& nums) 
+    {
+        int n = nums.size();
+        vector<int> result(n, -1);
 
-        vector<int> result;
-
-        bool found;
-        for (auto a : nums) 
+        for (int i = 0; i < n; i++)
         {
-            found = false;
-            for (auto b : sorted) 
+            for (int j = i; j < i + n; j++)
             {
-                if (a < b) 
+                if (nums[i] < nums[j%n])
                 {
-                    printf("%d\n", b);
-                    result.emplace_back(b);
-                    found = true;
+                    result[i] = nums[j%n];
                     break;
                 }
-            }
-            if (found == false)
-            {
-                result.emplace_back(-1);
             }
         }
 
         return result;
-        
+
     }
 };
 
