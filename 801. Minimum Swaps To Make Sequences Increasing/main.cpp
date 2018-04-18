@@ -36,11 +36,26 @@ using namespace std;
 class Solution {
     public:
     int minSwap(vector<int>& A, vector<int>& B) {
+        int N = A.size();
+        int count = 0;
+        for (int i = 0; i < N-1; i++) {
+            if (A[i] < A[i + 1] && B[i] < B[i + 1]) {
+            
+            }
+            else {
+                swap(A[i+1], B[i+1]);
+                count++;
+                
+            }
+        }
 
+
+        return count;
     }
 };
 
 int main()
 {
+    
     return 0;
 }
