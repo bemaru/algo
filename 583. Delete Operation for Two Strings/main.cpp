@@ -5,6 +5,7 @@
 #include <functional> 
 #include <cctype>
 #include <locale>
+#include <vector>
 
 using namespace std;
 
@@ -24,141 +25,119 @@ Characters in given words can only be lower-case letters.
 
 // 가장 긴 똑같은 것을 찾으면?
 
-class Solution {
+// A utility function to find maximum of two integers
+int max(int a, int b)
+{
+    return (a > b) ? a : b;
+}
+/* Returns length of longest common substring of X[0..m-1]
+and Y[0..n-1] */
+    int LCSubStr(string& X,string& Y)
+    {
+        int totalResult = 0;
+        printf("LCSubStr : ");
+        // Create a table to store lengths of longest common suffixes of
+        // substrings.   Notethat LCSuff[i][j] contains length of longest
+        // common suffix of X[0..i-1] and Y[0..j-1]. The first row and
+        // first column entries have no logical meaning, they are used only
+        // for simplicity of program
+        int m = X.size();
+        int n = Y.size();
 
-   
+        int** LCSuff = new int*[m+1];
+        for (int i = 0; i < m + 1; ++i)
+            LCSuff[i] = new int[n+1];
+        int result = 0;  // To store length of the longest common substring
 
-    public:
-    int minDistance(string word1, string word2) {
-        string a = word1;
-        string b = word2;
-        sort(a.begin(), a.end());
-        sort(b.begin(), b.end());
-        printf("%s\n", a.c_str());
-        printf("%s\n", b.c_str());
-
-
-        int n = min(a.length(), b.length());
-        int i = 0;
-        while (a[i] == b[i] && i++ < n);
-
-        printf("%d\n", i);
-
-        printf("%s\n", a.substr(0, i).c_str());
-        printf("%s\n", b.substr(0, i).c_str());
-
-        string str = a.substr(0, i).c_str();
-        const std::string::size_type size = str.size();
-        string chars;
-
-        unsigned short int index = 0;
-
-        for (char c : str)
+                         /* Following steps build LCSuff[m+1][n+1] in bottom up fashion. */
+        for (int i = 0; i <= m; i++)
         {
-            if (chars.find(c) != std::string::npos)
+            for (int j = 0; j <= n; j++)
             {
-                str.erase(str.begin() + index);
-                str.resize(size);
-            }
-            else
-            {
-                chars.push_back(c);
-            }
-            ++index;
-        }
+                if (i == 0 || j == 0)
+                    LCSuff[i][j] = 0;
 
-        str.shrink_to_fit();
-
-        printf("chars %s\n", chars.c_str());
-
-
-        // 여기서부터 진짜 지우기
-        int deleteCount = 0;
-        unsigned short int index1 = 0;
-        
-        const std::string::size_type w1size = word1.size();
-        for(auto c:word1)
-        {
-            
-            if (chars.find(c) == std::string::npos && c != '\0')
-            {
-                word1.erase(word1.begin() + index1);
-                word1.resize(w1size);
-                deleteCount++;
-                
-            }
-            index1++;
-        }
-        
-
-        unsigned short int index2 = 0;
-        const std::string::size_type w2size = word2.size();
-        for(auto c:word2)
-        {
-            
-            if (chars.find(c) == std::string::npos && c!='\0')
-            {
-                word2.erase(word2.begin() + index2);
-                word2.resize(w2size);
-                deleteCount++;
-            }
-            index2++;
-        }
-
-        
-        printf("delete differents\n");
-        printf("1(%d) : %s\n", word1.size(),word1.c_str());
-        printf("2(%d) : %s\n", word2.size(),word2.c_str());
-
-      
-        
-        
-        printf("same ( %s )\n", word1 == word2?"true":"false");
-        
-        while (word1 != word2 && word1.size() > 0 && word2.size() > 0)
-        {
-
-
-
-            if (word1.size() >= word2.size())
-            {
-                for (int k = 0; k < word2.size(); k++)
+                else if (X[i - 1] == Y[j - 1])
                 {
-                    if (word1[k] != word2[k])
-                    {
-                        deleteCount++;
-                        word1.erase(word1.begin() + k);
-                        break;
-                    }
+                    printf("%c", X[i - 1]);
+                    totalResult++;
+                    LCSuff[i][j] = LCSuff[i - 1][j - 1] + 1;
+                    result = max(result, LCSuff[i][j]);
                 }
-
-            }
-            else
-            {
-                for (int k = 0; k < word1.size(); k++)
-                {
-                    if (word1[k] != word2[k])
-                    {
-                        deleteCount++;
-                        word2.erase(word2.begin() + k);
-                        break;
-                    }
-                }
+                else LCSuff[i][j] = 0;
             }
         }
-
-        printf("finish\n");
-        printf("1:%s\n", word1.c_str());
-        printf("2:%s\n", word2.c_str());
-        return deleteCount;
+        printf("\n");
+        return result;
+        //return totalResult;
     }
-};
+
+        class Solution {
+
+
+            public:
+            int minDistance(string word1, string word2) {
+                int d = 0;
+                printf("1:%s\n", word1.c_str());
+                printf("2:%s\n", word2.c_str());
+
+                size_t prevSize = word1.size();
+                word1.erase(std::remove_if(word1.begin(),
+                    word1.end(),
+                    [&](unsigned char x) {return word2.find(x) == string::npos; }), word1.end());
+                printf("word1 erase count = %d\n", prevSize - word1.size());
+                d += (prevSize - word1.size());
+
+                prevSize = word2.size();
+                word2.erase(std::remove_if(word2.begin(),
+                    word2.end(),
+                    [&](unsigned char x) {return word1.find(x) == string::npos; }), word2.end());
+
+                printf("word2 erase count = %d\n", prevSize - word2.size());
+                d += (prevSize - word2.size());
+
+                printf("1:%s\n", word1.c_str());
+                printf("2:%s\n", word2.c_str());
+        
+                printf("d = %d\n", d);
+        
+        
+                /*int k = 0;
+                while (word1.size() > 0 && word2.size() > 0 && k < word1.size() && k< word2.size() )
+                {
+                    if (word1[k] != word2[k]) 
+                    {
+                        string* temp = &word1;
+                        if (word1.size() < word2.size())
+                            temp = &word2;
+
+                        temp->erase(temp->begin() + k);
+                        d++;
+                        continue;
+                    }
+                    k++;
+                }
+
+                d += abs(static_cast<int>(word1.size() - word2.size()));*/
+                printf("LCSubStr : %d\n",LCSubStr(word1, word2));
+        
+                d += word1.size() + word2.size() - (2 * (LCSubStr(word1, word2)));
+
+
+                printf("finish\n");
+                printf("1:%s\n", word1.c_str());
+                printf("2:%s\n", word2.c_str());
+                return d;
+            }
+        };
 
 void main()
 {
-    string word1 = "ab";
-    string word2 = "bc";
+    //string word1 = "horse";
+    //string word2 = "ros";
 
+    string word1 = "mart";
+    string word2 = "karma";
     
  
     
