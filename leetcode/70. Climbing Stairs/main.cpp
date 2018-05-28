@@ -2,10 +2,12 @@
 #include <vector>
 
 std::vector<int> result(9999, -1);
+
+
 class Solution {
 
     public:
-    
+    enum STATE { READY,RUNNING };
     Solution()
     {
         result[0] = 0;
