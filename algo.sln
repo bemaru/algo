@@ -35,7 +35,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "N으로 표현", "programme
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "programmers", "programmers", "{A097F25D-9DC2-4181-B12C-20958C23D04C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "보행자천국", "..\programmers\보행자천국\보행자천국.vcxproj", "{11F6E26E-8EAB-4767-9F83-082CD138D870}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "보행자천국", "programmers\보행자천국\보행자천국.vcxproj", "{11F6E26E-8EAB-4767-9F83-082CD138D870}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
